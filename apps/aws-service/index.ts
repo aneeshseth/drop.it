@@ -5,7 +5,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import fs from "fs";
 
 const client = new S3Client({
-  region: "us-east-1",
+  region: "",
   credentials: {
     accessKeyId: "",
     secretAccessKey: "",

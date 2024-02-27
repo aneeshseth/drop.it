@@ -1,0 +1,17 @@
+{
+  "name": "k8s-microservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@kubernetes/client-node": "^0.20.0",
+    "@types/cors": "^2.8.17",
+    "cors": "^2.8.5"
+  }
+}

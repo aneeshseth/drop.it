@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import RotateLoader from "react-spinners/RotateLoader";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { useToast } from "@/components/ui/use-toast";
 import {
   charCountState,
   currentFilesState,
@@ -31,6 +32,7 @@ export default function App({ params, searchParams }: any) {
   const currentFiles = useRecoilValue(currentFilesState);
   const image = useRecoilValue(userimageState);
   const [color, setColor] = useState("#ffffff");
+  const { toast } = useToast();
   const [currentCodeValue, setCurrentCodeValue] = useState("");
   const [files, setFiles] = React.useState(dummyFiles);
   const [selectedFile, setSelectedFile] = React.useState(null);
@@ -39,10 +41,9 @@ export default function App({ params, searchParams }: any) {
   const router = useRouter();
   //initial render useffect
   useEffect(() => {
-    const websocket = new WebSocket(`wss://${params.id}.wsserver.aneesh.wiki`);
+    const websocket = new WebSocket(`ws://${params.id}.wsserver.aneesh.wiki`);
     console.log(websocket);
     websocket.onopen = () => {
-      console.log("WS OPENED");
       socket.current = websocket;
       setLoading(false);
       websocket.send(
@@ -53,7 +54,13 @@ export default function App({ params, searchParams }: any) {
       );
     };
     websocket.onerror = () => {
-      router.push("/");
+      toast({
+        title:
+          "currently trying to fix a server-side issue, should be up soon!",
+      });
+      setTimeout(() => {
+        router.push("/");
+      }, 3000);
     };
     websocket.onmessage = (event) => {
       const parsed_message = JSON.parse(event.data);

@@ -41,7 +41,7 @@ async function copyObject(
     const params = {
       Bucket: destinationBucket,
       CopySource: `${sourceBucket}/${sourceKey}`,
-      Key: `${prefix}/${destinationKey}`, // Modified to include the prefix provided for the destination
+      Key: `${prefix}/${destinationKey}`,
     };
     const result = await s3.copyObject(params).promise();
     console.log("File copied successfully:", result.CopyObjectResult);

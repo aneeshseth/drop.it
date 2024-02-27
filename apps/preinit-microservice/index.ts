@@ -3,11 +3,9 @@ const app = express();
 import fs from "fs";
 import AWS from "aws-sdk";
 import cors from "cors";
-import dotenv from 'dotenv'
-dotenv.config()
+import dotenv from "dotenv";
+dotenv.config();
 app.use(cors());
-
-
 
 AWS.config.update({
   region: process.env.REGION,
@@ -22,13 +20,13 @@ const s3 = new AWS.S3({
 
 app.use(express.json());
 
-app.get("/", (req,res) => {
-  res.send("preinit server.")
-})
+app.get("/", (req, res) => {
+  res.send("preinit server.");
+});
 
 async function getBoilerplateFiles(langauge: string) {
   return new Promise((resolve, reject) => {
-    fs.readdir(`../preinit-microservice/${langauge}`, async (err, files) => {
+    fs.readdir(`../${langauge}`, async (err, files) => {
       if (err) {
         console.log(err);
       }
@@ -113,12 +111,21 @@ async function addFiles(
 
 app.post("/pre_init", async (req: Request, res: Response) => {
   const { codebase_name, language } = req.body;
-  const boilerplate_path = `../preinit-microservice/${language}`;
+  const boilerplate_path = `../${language}`;
   const filesToAdd = await getBoilerplateFiles(language);
   //@ts-ignore
   await addFiles(filesToAdd, boilerplate_path, codebase_name);
   res.sendStatus(200);
 });
+
+async function init() {
+  fs.readdir("../node", (err, files) => {
+    if (err) console.log(err);
+    console.log(files);
+  });
+}
+
+init();
 
 app.listen(3002, () => {
   console.log("server running.");

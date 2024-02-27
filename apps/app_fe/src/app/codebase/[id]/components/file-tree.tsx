@@ -121,6 +121,7 @@ function File(props: {
   icon: any;
   name: string;
   current_socket: any;
+  onClick: any
 }) {
   return (
     <div className="flex items-center mb-2 ml-2 mt-5">

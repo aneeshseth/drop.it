@@ -41,7 +41,7 @@ export default function App({ params, searchParams }: any) {
   const router = useRouter();
   //initial render useffect
   useEffect(() => {
-    const websocket = new WebSocket(`ws://${params.id}.wsserver.aneesh.wiki`);
+    const websocket = new WebSocket(`wss://${params.id}.wsserver.aneesh.wiki`);
     console.log(websocket);
     websocket.onopen = () => {
       socket.current = websocket;

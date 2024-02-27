@@ -1,9 +1,7 @@
 import express, { Request, Response } from "express";
-import fs from "fs";
 import AWS from "aws-sdk";
 import cors from "cors";
 import dotenv from "dotenv";
-import util from "util";
 
 dotenv.config();
 const app = express();
@@ -11,11 +9,7 @@ app.use(cors());
 
 const s3 = new AWS.S3({
   apiVersion: "2006-03-01",
-  params: { Bucket: "sandbox-b" },
 });
-
-const readdirAsync = util.promisify(fs.readdir);
-const readFileAsync = util.promisify(fs.readFile);
 
 app.use(express.json());
 
@@ -23,57 +17,53 @@ app.get("/", (req, res) => {
   res.send("preinit server.");
 });
 
-async function getBoilerplateFiles(language: string) {
+async function listObjects(bucketName: string): Promise<AWS.S3.Object[]> {
   try {
-    const files = await readdirAsync(`../${language}`);
-    console.log(files);
-    return files;
+    const params = {
+      Bucket: bucketName,
+    };
+    const data = await s3.listObjectsV2(params).promise();
+    return data.Contents || [];
   } catch (err) {
-    console.error(err);
+    console.error("Error listing objects:", err);
     return [];
   }
 }
 
-async function addFileToS3(key: string, data: Buffer) {
+async function copyObject(
+  sourceBucket: string,
+  sourceKey: string,
+  destinationBucket: string,
+  destinationKey: string,
+  prefix: string
+) {
   try {
     const params = {
-      Key: key,
-      Body: data,
-      Bucket: "sandbox-b",
+      Bucket: destinationBucket,
+      CopySource: `${sourceBucket}/${sourceKey}`,
+      Key: `${prefix}/${destinationKey}`, // Modified to include the prefix provided for the destination
     };
-    const result = await s3.upload(params).promise();
-    console.log("File uploaded successfully:", result.Location);
+    const result = await s3.copyObject(params).promise();
+    console.log("File copied successfully:", result.CopyObjectResult);
   } catch (err) {
-    console.error("Error uploading file:", err);
-  }
-}
-
-async function addFilesToS3(
-  files: string[],
-  language: string,
-  codebaseName: string
-) {
-  for (const file of files) {
-    const filePath = `../${language}/${file}`;
-    try {
-      const stats = fs.statSync(filePath);
-      if (stats.isDirectory()) {
-        const nestedFiles = await readdirAsync(filePath);
-        await addFilesToS3(nestedFiles, language, `${codebaseName}/${file}`);
-      } else {
-        const data = await readFileAsync(filePath);
-        await addFileToS3(`${codebaseName}/${file}`, data);
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    console.error("Error copying object:", err);
   }
 }
 
 app.post("/pre_init", async (req: Request, res: Response) => {
-  const { codebase_name, language } = req.body;
-  const filesToAdd = await getBoilerplateFiles(language);
-  await addFilesToS3(filesToAdd, language, codebase_name);
+  const { prefix } = req.body;
+  const objectsToCopy = await listObjects("final-pt1");
+  for (const object of objectsToCopy) {
+    const sourceKey = object.Key!;
+    const destinationKey = sourceKey;
+    await copyObject(
+      "final-pt1",
+      sourceKey,
+      "sandbox-b",
+      destinationKey,
+      prefix
+    );
+  }
   res.sendStatus(200);
 });
 

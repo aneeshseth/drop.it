@@ -11,7 +11,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   charCountState,
-  codebaseState,
   currentFilesState,
   filesState,
   userimageState,

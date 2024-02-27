@@ -1,22 +1,21 @@
 import express, { Request, Response } from "express";
-const app = express();
 import fs from "fs";
 import AWS from "aws-sdk";
 import cors from "cors";
 import dotenv from "dotenv";
-dotenv.config();
-app.use(cors());
+import util from "util";
 
-AWS.config.update({
-  region: process.env.REGION,
-  accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.SECRET_KEY,
-});
+dotenv.config();
+const app = express();
+app.use(cors());
 
 const s3 = new AWS.S3({
   apiVersion: "2006-03-01",
   params: { Bucket: "sandbox-b" },
 });
+
+const readdirAsync = util.promisify(fs.readdir);
+const readFileAsync = util.promisify(fs.readFile);
 
 app.use(express.json());
 
@@ -24,108 +23,59 @@ app.get("/", (req, res) => {
   res.send("preinit server.");
 });
 
-async function getBoilerplateFiles(langauge: string) {
-  return new Promise((resolve, reject) => {
-    fs.readdir(`../${langauge}`, async (err, files) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log(files);
-      resolve(files);
-    });
-  });
+async function getBoilerplateFiles(language: string) {
+  try {
+    const files = await readdirAsync(`../${language}`);
+    console.log(files);
+    return files;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 }
 
-async function getCurrentFolder(boilerplate_path: string, file: string) {
-  return new Promise<string[]>((resolve, reject) => {
-    fs.readdir(`${boilerplate_path}/${file}`, async (err, files) => {
-      if (err) console.log(err);
-      resolve(files);
-    });
-  });
+async function addFileToS3(key: string, data: Buffer) {
+  try {
+    const params = {
+      Key: key,
+      Body: data,
+      Bucket: "sandbox-b",
+    };
+    const result = await s3.upload(params).promise();
+    console.log("File uploaded successfully:", result.Location);
+  } catch (err) {
+    console.error("Error uploading file:", err);
+  }
 }
 
-async function addNestedFolderToS3(
-  codebase_name: string,
-  file: string,
-  filesToAdd: string[],
-  boilerplate_path: string
-) {
-  const addition = filesToAdd.map((fileInDir) =>
-    fs.readFile(
-      `${boilerplate_path}/${file}/${fileInDir}`,
-      async (err, data) => {
-        if (err) console.log(err);
-        const params = {
-          Key: `${codebase_name}/${file}/${fileInDir}`,
-          Body: data,
-          Bucket: "sandbox-b",
-        };
-        await s3.upload(params, (err: any, data: any) => {
-          if (err) {
-            console.error("Error uploading file:", err);
-          } else {
-            console.log("File uploaded successfully:", data.Location);
-          }
-        });
-      }
-    )
-  );
-  await Promise.all(addition);
-}
-
-async function addFiles(
+async function addFilesToS3(
   files: string[],
-  boilerplate_path: string,
-  codebase_name: string
+  language: string,
+  codebaseName: string
 ) {
-  const filesAdditionToS3 = files.map(async (file) => {
-    if (fs.lstatSync(`${boilerplate_path}/${file}`).isDirectory()) {
-      const currentDirFiles = await getCurrentFolder(boilerplate_path, file);
-      await addNestedFolderToS3(
-        codebase_name,
-        file,
-        currentDirFiles,
-        boilerplate_path
-      );
-      return;
+  for (const file of files) {
+    const filePath = `../${language}/${file}`;
+    try {
+      const stats = fs.statSync(filePath);
+      if (stats.isDirectory()) {
+        const nestedFiles = await readdirAsync(filePath);
+        await addFilesToS3(nestedFiles, language, `${codebaseName}/${file}`);
+      } else {
+        const data = await readFileAsync(filePath);
+        await addFileToS3(`${codebaseName}/${file}`, data);
+      }
+    } catch (err) {
+      console.error(err);
     }
-    fs.readFile(`${boilerplate_path}/${file}`, async (err, data) => {
-      if (err) console.log(err);
-      const params = {
-        Key: `${codebase_name}/${file}`,
-        Body: data,
-        Bucket: "sandbox-b",
-      };
-      await s3.upload(params, (err: any, data: any) => {
-        if (err) {
-          console.error("Error uploading file:", err);
-        } else {
-          console.log("File uploaded successfully:", data.Location);
-        }
-      });
-    });
-  });
-  await Promise.all(filesAdditionToS3);
+  }
 }
 
 app.post("/pre_init", async (req: Request, res: Response) => {
   const { codebase_name, language } = req.body;
-  const boilerplate_path = `../${language}`;
   const filesToAdd = await getBoilerplateFiles(language);
-  //@ts-ignore
-  await addFiles(filesToAdd, boilerplate_path, codebase_name);
+  await addFilesToS3(filesToAdd, language, codebase_name);
   res.sendStatus(200);
 });
-
-async function init() {
-  fs.readdir("../node", (err, files) => {
-    if (err) console.log(err);
-    console.log(files);
-  });
-}
-
-init();
 
 app.listen(3002, () => {
   console.log("server running.");

@@ -1,3 +1,5 @@
+/*
+
 import express, { Request, Response } from "express";
 import AWS from "aws-sdk";
 import cors from "cors";
@@ -53,10 +55,22 @@ async function copyObject(
 app.post("/pre_init", async (req: Request, res: Response) => {
   const { prefix } = req.body;
   const objectsToCopy = await listObjects("final-pt1");
-
+  for (const object of objectsToCopy) {
+    const sourceKey = object.Key!;
+    const destinationKey = sourceKey;
+    await copyObject(
+      "final-pt1",
+      sourceKey,
+      "sandbox-b",
+      destinationKey,
+      prefix
+    );
+  }
   res.sendStatus(200);
 });
 
 app.listen(3002, () => {
   console.log("server running.");
 });
+
+*/

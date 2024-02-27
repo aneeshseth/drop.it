@@ -78,11 +78,11 @@ function Tiles({ user_image, ...props }: any) {
   const [thisJoke, setThisJoke] = useState("");
   async function startCodebase(lang: string) {
     const slug = generateRandomString(7);
-    await axios.post("http://localhost:3002/pre_init", {
+    await axios.post("https://preinit.dropit.aneesh.wiki/pre_init", {
       codebase_name: slug.toLowerCase(),
       language: lang,
     });
-    await axios.post("http://localhost:3005/init", {
+    await axios.post("https://init.dropit.aneesh.wiki/init", {
       codebase_name: slug.toLowerCase(),
       language: lang,
     });

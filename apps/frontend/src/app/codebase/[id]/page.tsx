@@ -54,11 +54,9 @@ export default function App({ params, searchParams }: any) {
       );
     };
     websocket.onerror = () => {
-      toast({
-        title:
-          "currently trying to fix a server-side issue, should be up soon!",
-      });
+      alert("currently trying to fix a server-side issue, should be up soon!");
       setTimeout(() => {
+        setLoading(false);
         router.push("/");
       }, 3000);
     };

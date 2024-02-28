@@ -19,7 +19,7 @@ export default function SettingsProfilePage() {
         <div className="w-3/12 flex flex-col gap-3 border-neutral-800 border-2 rounded-xl len-div">
           <div className="mt-10">
             <h2 className="scroll-m-20 border-b pb-3 text-2xl font-mono  transition-colors first:mt-0 text-center">
-              Microservices
+              Services
             </h2>
           </div>
           <div
@@ -33,7 +33,7 @@ export default function SettingsProfilePage() {
             <h3
               className={`scroll-m-20 text-xl font-normal tracking-tight text-neutral-500 hover:text-white hover:cursor-pointer transform transition-all duration-200 ${isUpdate ? "text-red-500" : ""}`}
             >
-              AWS ECS Containers
+              K8S Cluster
             </h3>
           </div>
           <div
@@ -47,7 +47,7 @@ export default function SettingsProfilePage() {
             <h3
               className={`scroll-m-20 text-xl font-normal tracking-tight text-neutral-500 hover:text-white hover:cursor-pointer transform transition-all duration-200 ${isCreate ? "text-red-500" : ""}`}
             >
-              API Service
+              API Services
             </h3>
           </div>
           <div
@@ -61,7 +61,7 @@ export default function SettingsProfilePage() {
             <h3
               className={`scroll-m-20 text-xl font-normal tracking-tight text-neutral-500 hover:text-white hover:cursor-pointer transform transition-all duration-200 ${isUpload ? "text-red-500" : ""}`}
             >
-              Runtime Logs
+              Frontend
             </h3>
           </div>
           <div className="ml-8 mt-2 p-1 mr-2 justify-center w-full"></div>

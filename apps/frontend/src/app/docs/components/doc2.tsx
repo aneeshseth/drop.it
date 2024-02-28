@@ -5,46 +5,53 @@ export default function Component2() {
   const router = useRouter();
   return (
     <div className="bg-[#121212] text-white p-8 h-full overflow-auto">
-      <h1 className="text-5xl font-bold mb-4">AWS ECS Containers </h1>
+      <h1 className="text-5xl font-bold mb-4">K8S Cluster</h1>
       <hr className="border-gray-700 mb-6" />
       <p className="mb-6">This forms the moat of the project.</p>
       <h2 className="text-3xl font-bold mb-4">The task it does?</h2>
       <p className="mb-6">
-        Clones the Github URL Repo in a Docker container deployed to ECS -
-        Builds the code to generate HTML, CSS, and JS files to be served to the
-        browser - Store those generated files to AWS S3 -{" "}
-        <b>
-          all using a Docker container, a triggered .sh file from the container,
-          and an index.ts which adds the built files to S3.
-        </b>
+        The K8s cluster is responsible for the scalability and security moat of
+        the application. Every time a user creates a codebase, an Ingress, a
+        Pod, and a Service are started.
       </p>
-      <h2 className="text-2xl font-bold mb-4">Why does this work?</h2>
+      <h2 className="text-2xl font-bold mb-4">Why a Pod/Service?</h2>
       <p className="mb-6">
-        This architecture allows for fairly high security since the arbitrary
-        code is built in a Containerized Docker env on the Cloud, and the
-        functions to send those files to S3 also happen on those independent
-        containers.
+        This Pod is responsible for running the codebase selected by the user.
+        All file updates, all folders created/deleted, all of it is handled in
+        the pod created, and the service allows access to the Pod.
       </p>
-      <h2 className="text-2xl font-bold mb-4">Can this scale?</h2>
+      <h2 className="text-2xl font-bold mb-4">Why an Ingress?</h2>
       <p className="mb-6">
-        Yes. The deployment service running on ECS containers can allow as many
-        containers to be created as needed through AWS Autoscaling, hence
-        scalable.
+        The ingress is created to handle path based routing. The service has a
+        specific IP that I can hit, and it can only load balance requests, and
+        not proxy them to the right pod for file updates, file created, terminal
+        commands that need to run on the codebase, etc, which means that an
+        ingress needs to be created which tells the ingress controller that any
+        IP address that hits for eg: abc.ingress.com, would be routed to a
+        service that is of the name abc.
       </p>
       <div className="rounded-t-lg bg-[#1F1F1F] p-4 mb-0.5">
         <div className="flex items-center space-x-2 text-sm">
           <CloudLightningIcon className="text-green-500" />
-          <span className="font-bold">ECS Containers</span>
-          <span className="text-gray-500">deployment-service</span>
+          <span className="font-bold">K8S Design</span>
+          <span className="text-gray-500">codebase-service</span>
         </div>
         <div className="flex space-x-2 mt-2 rounded-md flex-col">
           <img
-            src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1707861570/Screen_Shot_2024-02-13_at_1.58.33_PM_zs65by.png"
-            className="rounded-md h-[600px]"
+            src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1709080689/Screen_Shot_2024-02-27_at_4.37.24_PM_ixj1ib.png"
+            className="rounded-md h-[400px] "
           />
           <img
-            src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1707861570/Screen_Shot_2024-02-13_at_1.59.17_PM_ylkpsa.png"
-            className="rounded-md h-[400px]"
+            src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1709080752/Screen_Shot_2024-02-27_at_4.38.48_PM_zhoifn.png"
+            className="rounded-md h-[500px]"
+          />
+          <img
+            src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1709080752/Screen_Shot_2024-02-27_at_4.38.37_PM_gnr3hs.png"
+            className="rounded-md h-[700px]"
+          />
+          <img
+            src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1709080752/Screen_Shot_2024-02-27_at_4.38.59_PM_b8l2dn.png"
+            className="rounded-md h-[800px]"
           />
         </div>
       </div>

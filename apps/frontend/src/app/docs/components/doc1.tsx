@@ -3,26 +3,35 @@ import { Button } from "@/components/ui/button";
 export default function Component() {
   return (
     <div className="bg-[#121212] text-white p-8 h-full overflow-auto">
-      <h1 className="text-5xl font-bold mb-4">API Service</h1>
+      <h1 className="text-5xl font-bold mb-4">API Services</h1>
       <hr className="border-gray-700 mb-6" />
+      <p className="mb-6">There are 3 micro services running.</p>
       <p className="mb-6">
-        This is one of the simpler services out of the 3 services.
+        1) The first micro service is the service that adds the boilerplate code
+        for the specific codebase into AWS S3.
       </p>
-      <h2 className="text-3xl font-bold mb-4">The task it does?</h2>
       <p className="mb-6">
-        This service is responsible to recieve requests from the client, and
-        instigate a deployment task to be run on AWS ECS containers.
+        2) The second micro service is the service that dynamically creates the
+        K8s Ingress, Service and Pod with a codebase name specified by a user,
+        and all the K8s Ingress, Service & Pod config being dumped into a YAML
+        file.
       </p>
+      <p className="mb-6">
+        3) The third micro service is the web socket service which is running
+        inside the K8s pod that started, which listens for events to update the
+        filesystem of the codebase, and any possible terminal commands that are
+        entered. Effectively, it handles everything after the codebase is
+        initialised.
+      </p>
+
       <div className="rounded-t-lg bg-[#1F1F1F] p-4 mb-0.5">
         <div className="flex items-center space-x-2 text-sm">
           <CloudLightningIcon className="text-green-500" />
-          <span className="font-bold">Run-Task Command</span>
-          <span className="text-gray-500">api-service</span>
         </div>
         <div className="flex space-x-2 mt-2 rounded-md">
           <img
-            src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1707860644/Screen_Shot_2024-02-13_at_1.43.28_PM_o9dddx.png"
-            className="rounded-md h-[400px]"
+            src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1709081085/Screen_Shot_2024-02-27_at_4.44.32_PM_pzhnxx.png"
+            className="rounded-md h-[400px] object-cover"
           />
         </div>
       </div>

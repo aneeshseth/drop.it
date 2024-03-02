@@ -29,7 +29,7 @@ export default function Home() {
           variant={"link"}
           className="text-white mt-5 text-xl underline"
           onClick={() => {
-            window.open("https://github.com/aneeshseth/dropit", "_blank");
+            window.open("https://github.com/aneeshseth/drop.it", "_blank");
           }}
         >
           code.

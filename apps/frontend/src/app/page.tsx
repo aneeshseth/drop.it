@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 export default function Home() {
   const router = useRouter();
   const words = [
@@ -23,6 +24,17 @@ export default function Home() {
           drop.it
         </h1>
       </div>
+      <div className="absolute top-10 right-5" style={{ zIndex: "20" }}>
+        <Button
+          variant={"link"}
+          className="text-white mt-5 text-xl underline"
+          onClick={() => {
+            window.open("https://github.com/aneeshseth/dropit", "_blank");
+          }}
+        >
+          codebase.
+        </Button>
+      </div>
       <Spotlight className="-top-40 left-0 md:left-60 absolute" fill="blue" />
       <div className="p-4 max-w-7xl z-10 w-full pt-20 text-center text-white -mt-7">
         <h1 className="scroll-m-20 text-2xl tracking-tight lg:text-5xl md:mt-44 lg:mt-44 mt-14 font-serif">
@@ -30,14 +42,14 @@ export default function Home() {
           codebases in the browser.
         </h1>
 
-        <div className="w-full absolute inset-0 h-screen">
+        <div className="w-screen absolute inset-0 h-screen">
           <SparklesCore
             id="tsparticlesfullpage"
             background="transparent"
             minSize={0.6}
             maxSize={1.4}
             particleDensity={70}
-            className="w-full h-full"
+            className="w-screen h-screen"
             particleColor="#FFFFFF"
           />
         </div>
@@ -58,7 +70,7 @@ export default function Home() {
               router.push("/docs");
             }}
           >
-            system design.
+            design implementation.
           </Button>
         </div>
         <div className="mt-10 flex justify-center items-center w-full px-4">

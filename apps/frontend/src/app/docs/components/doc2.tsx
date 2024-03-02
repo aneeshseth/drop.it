@@ -39,19 +39,19 @@ export default function Component2() {
         <div className="flex space-x-2 mt-2 rounded-md flex-col">
           <img
             src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1709080689/Screen_Shot_2024-02-27_at_4.37.24_PM_ixj1ib.png"
-            className="rounded-md h-[400px] "
+            className="rounded-md h-[200px] md:h-[400px]"
           />
           <img
             src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1709080752/Screen_Shot_2024-02-27_at_4.38.48_PM_zhoifn.png"
-            className="rounded-md h-[500px]"
+            className="rounded-md h-[120px] md:h-[400px]"
           />
           <img
             src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1709080752/Screen_Shot_2024-02-27_at_4.38.37_PM_gnr3hs.png"
-            className="rounded-md h-[700px]"
+            className="rounded-md h-[120px] md:h-[400px]"
           />
           <img
             src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1709080752/Screen_Shot_2024-02-27_at_4.38.59_PM_b8l2dn.png"
-            className="rounded-md h-[800px]"
+            className="rounded-md h-[120px] md:h-[400px]"
           />
         </div>
       </div>

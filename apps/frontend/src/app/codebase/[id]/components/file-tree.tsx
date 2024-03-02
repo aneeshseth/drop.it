@@ -76,7 +76,6 @@ function Directory(props: any) {
   };
 
   useEffect(() => {
-    console.log(socket.current);
     if (open && !childrenFetched) {
       toggle();
     }

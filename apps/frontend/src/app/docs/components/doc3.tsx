@@ -1,7 +1,9 @@
 export default function Component3() {
   return (
     <div className="bg-[#121212] text-white p-8 h-full overflow-auto">
-      <h1 className="text-5xl font-bold mb-4">Frontend Components/State</h1>
+      <h1 className="text-4xl font-bold mb-4 md:text-5xl">
+        Frontend Components
+      </h1>
       <hr className="border-gray-700 mb-6" />
       <h2 className="text-3xl font-bold mb-4">How was it built?</h2>
       <p className="mb-6">
@@ -16,7 +18,7 @@ export default function Component3() {
         <div className="flex space-x-2 mt-2 rounded-md flex-col">
           <img
             src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1709081205/Screen_Shot_2024-02-27_at_4.46.37_PM_dciohj.png"
-            className="object-cover rounded-md h-[500px]"
+            className="rounded-md h-[200px] lg:h-[500px]"
           />
         </div>
       </div>

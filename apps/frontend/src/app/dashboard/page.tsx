@@ -16,7 +16,7 @@ export default async function page() {
           choose a starter codebase.
         </h1>
         <h1 className="text-md tracking-tight lg:text-md mr-5 ml-5 mt-2 mb-5">
-          currently available with Node.js, soon in 5+ stacks.
+          currently available the below stacks, soon in 10+ stacks.
         </h1>
       </div>
       <div className="mt-20 ml-5 hidden md:block">

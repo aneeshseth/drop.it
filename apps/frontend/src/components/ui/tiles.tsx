@@ -5,15 +5,29 @@ import { charCountState, codebaseState, userimage } from "@/app/state/state";
 import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import RotateLoader from "react-spinners/RotateLoader";
+import { createClient } from "@supabase/supabase-js";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "./button";
 
 function Tiles({ user_image, ...props }: any) {
-  console.log(user_image);
   const router = useRouter();
   const [_text, setText] = useRecoilState(codebaseState);
-  const [image, setImage] = useRecoilState(userimage);
+  const [_image, setImage] = useRecoilState(userimage);
   const count = useRecoilValue(charCountState);
   const [loading, setLoading] = useState(false);
   const [color, setColor] = useState("#ffffff");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const programmingJokes = [
     "Why do programmers prefer dark mode? Because light attracts bugs.",
     "Why did the programmer quit his job? Because he didn't get arrays.",
@@ -74,15 +88,19 @@ function Tiles({ user_image, ...props }: any) {
 
     return randomString;
   }
+  const supabase = createClient(
+    process.env.SUPABASE_CLIENT!,
+    process.env.SUPABASE_KEY!
+  );
 
   const [thisJoke, setThisJoke] = useState("");
   async function startCodebase(lang: string) {
     const slug = generateRandomString(7);
-    await axios.post("https://preinit.dropit.aneesh.wiki/pre_init", {
+    await axios.post("http://localhost:3002/pre_init", {
       codebase_name: slug.toLowerCase(),
       language: lang,
     });
-    await axios.post("https://init.dropit.aneesh.wiki/init", {
+    await axios.post("http://localhost:3005/init", {
       codebase_name: slug.toLowerCase(),
       language: lang,
     });
@@ -90,8 +108,17 @@ function Tiles({ user_image, ...props }: any) {
     setTimeout(() => {
       setLoading(false);
       router.push(`/codebase/${slug.toString().toLowerCase()}`);
-    }, 9000);
+    }, 12000);
   }
+  async function addUserToDB() {
+    if (email == "")  {
+      alert("enter an email.")
+      return;
+    }
+      await supabase.from("users").insert({ email: email });
+      alert("you'll be sent an email soon to get a demo!");
+  }
+  
   if (loading) {
     return (
       <div className="flex justify-center items-center w-screen h-screen flex-col">
@@ -108,58 +135,355 @@ function Tiles({ user_image, ...props }: any) {
         <div>
           <p className="leading-7 [&:not(:first-child)]:mt-20 ml-5 mr-5 text-center">
             Your codebase is loading, until then, here's something: {thisJoke}{" "}
-            hahahahaha{" "}
+            hahahahaha.
           </p>
         </div>
       </div>
     );
   }
   return (
-    <div className="px-4 md:px-6 md:py-8 mt-5 flex justify-center">
-      <div className="group relative overflow-hidden rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105">
-        <div className="absolute inset-0 bg-gradient-to-br  opacity-95 group-hover:opacity-100 transition-opacity" />
-        <div className="relative p-6 cursor-pointer">
-          <HelpCircleIcon className="w-12 h-12 text-white mb-4" />
-          <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-3xl mb-3 ">
-            NodeJS
-          </h1>
-          <img
-            src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1708830652/Screen_Shot_2024-02-24_at_7.10.01_PM_oxwvhy.png"
-            width={700}
-            height={460}
-            className="rounded-xl border-2 border-slate-600"
-            alt="Descriptive Alt Text"
-            onClick={() => {
-              setText("node");
-              startCodebase("node");
-            }}
-          />
-        </div>
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 px-4 md:px-6 md:py-8 mt-5">
+      <Dialog>
+        <DialogTrigger asChild>
+          <div className="group relative overflow-hidden rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105">
+            <div className="absolute inset-0 bg-gradient-to-br  opacity-95 group-hover:opacity-100 transition-opacity" />
+            <div className="relative p-6 cursor-pointer">
+              <HelpCircleIcon className="w-12 h-12 text-white mb-4" />
+              <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-3xl mb-3">
+                ReactJS + TS
+              </h1>
+              <img
+                src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1708830652/Screen_Shot_2024-02-24_at_7.10.01_PM_oxwvhy.png"
+                width={700}
+                height={460}
+                className="rounded-xl border-2 border-slate-600"
+                alt="Descriptive Alt Text"
+              />
+            </div>
+          </div>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px] max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>get a demo:</DialogTitle>
+            <DialogDescription>
+              get a demo with a react.js + ts codebase.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                placeholder="Pedro Duarte"
+                className="col-span-3"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
+                Email
+              </Label>
+              <Input
+                id="username"
+                placeholder="@peduarte"
+                className="col-span-3"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              onClick={() => {
+                addUserToDB();
+              }}
+              variant={"link"}
+            >
+              get demo
+            </Button>
+            <Button
+              variant={"link"}
+              onClick={() => {
+                router.push("/demo");
+              }}
+            >
+              watch demo
+            </Button>
+            <Button
+              onClick={() => {
+                router.push("/docs");
+              }}
+              variant={"link"}
+            >
+              learn more
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog>
+        <DialogTrigger asChild>
+          <div className="group relative overflow-hidden rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105">
+            <div className="absolute inset-0 bg-gradient-to-br  opacity-95 group-hover:opacity-100 transition-opacity" />
+            <div className="relative p-6 cursor-pointer">
+              <HelpCircleIcon className="w-12 h-12 text-white mb-4" />
+              <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-3xl mb-3 ">
+                NodeJS + TS
+              </h1>
+              <img
+                src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1708830652/Screen_Shot_2024-02-24_at_7.10.01_PM_oxwvhy.png"
+                width={700}
+                height={460}
+                className="rounded-xl border-2 border-slate-600"
+                alt="Descriptive Alt Text"
+              />
+            </div>
+          </div>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px] max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>get a demo:</DialogTitle>
+            <DialogDescription>
+              get a demo with a node.js + ts codebase.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                placeholder="Pedro Duarte"
+                className="col-span-3"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
+                Email
+              </Label>
+              <Input
+                id="username"
+                placeholder="@peduarte"
+                className="col-span-3"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              onClick={() => {
+                addUserToDB()
+              }}
+              variant={"link"}
+            >
+              get demo
+            </Button>
+            <Button
+              variant={"link"}
+              onClick={() => {
+                router.push("/demo");
+              }}
+            >
+              watch demo
+            </Button>
+            <Button
+              onClick={() => {
+                router.push("/docs");
+              }}
+              variant={"link"}
+            >
+              learn more
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog>
+        <DialogTrigger asChild>
+          <div className="group relative overflow-hidden rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105">
+            <div className="absolute inset-0 bg-gradient-to-br  opacity-95 group-hover:opacity-100 transition-opacity" />
+            <div className="relative p-6 cursor-pointer">
+              <HelpCircleIcon className="w-12 h-12 text-white mb-4" />
+              <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-3xl mb-3 ">
+                NodeJS
+              </h1>
+              <img
+                src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1708830652/Screen_Shot_2024-02-24_at_7.10.01_PM_oxwvhy.png"
+                width={700}
+                height={460}
+                className="rounded-xl border-2 border-slate-600"
+                alt="Descriptive Alt Text"
+              />
+            </div>
+          </div>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px] max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>get a demo:</DialogTitle>
+            <DialogDescription>
+              get a demo with a node.js codebase.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                placeholder="Pedro Duarte"
+                className="col-span-3"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
+                Email
+              </Label>
+              <Input
+                id="username"
+                placeholder="@peduarte"
+                className="col-span-3"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              onClick={() => {
+                addUserToDB();
+              }}
+              variant={"link"}
+            >
+              get demo
+            </Button>
+            <Button
+              variant={"link"}
+              onClick={() => {
+                router.push("/demo");
+              }}
+            >
+              watch demo
+            </Button>
+            <Button
+              onClick={() => {
+                router.push("/docs");
+              }}
+              variant={"link"}
+            >
+              learn more
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog>
+        <DialogTrigger asChild>
+          <div className="group relative overflow-hidden rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105">
+            <div className="absolute inset-0 bg-gradient-to-br  opacity-95 group-hover:opacity-100 transition-opacity" />
+            <div className="relative p-6 cursor-pointer">
+              <HelpCircleIcon className="w-12 h-12 text-white mb-4" />
+              <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-3xl mb-3">
+                ReactJS
+              </h1>
+              <img
+                src="https://res.cloudinary.com/dhxeo4rvc/image/upload/v1708830652/Screen_Shot_2024-02-24_at_7.10.01_PM_oxwvhy.png"
+                width={700}
+                height={460}
+                className="rounded-xl border-2 border-slate-600"
+                alt="Descriptive Alt Text"
+              />
+            </div>
+          </div>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[400px] max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>get a demo:</DialogTitle>
+            <DialogDescription>
+              get a demo with a react.js codebase.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                placeholder="Pedro Duarte"
+                className="col-span-3"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
+                Email
+              </Label>
+              <Input
+                id="username"
+                placeholder="@peduarte"
+                className="col-span-3"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              onClick={() => {
+                addUserToDB();
+              }}
+              variant={"link"}
+            >
+              get demo
+            </Button>
+            <Button
+              variant={"link"}
+              onClick={() => {
+                router.push("/demo");
+              }}
+            >
+              watch demo
+            </Button>
+            <Button
+              onClick={() => {
+                router.push("/docs");
+              }}
+              variant={"link"}
+            >
+              learn more
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
 
 export default Tiles;
-
-function CloudIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
-    </svg>
-  );
-}
 
 function HelpCircleIcon(props: any) {
   return (
@@ -182,21 +506,9 @@ function HelpCircleIcon(props: any) {
   );
 }
 
-function ShieldIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-    </svg>
-  );
-}
+/*
+
+
+
+     
+*/

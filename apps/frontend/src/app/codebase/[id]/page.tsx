@@ -4,7 +4,6 @@ import FileTree from "./components/file-tree";
 import { TerminalComponent } from "./terminal";
 import Editor, { Monaco } from "@monaco-editor/react";
 import { useRef } from "react";
-import { SparklesCore } from "@/components/ui/sparkles";
 import { Button } from "@/components/ui/button";
 import RotateLoader from "react-spinners/RotateLoader";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -32,17 +31,16 @@ export default function App({ params, searchParams }: any) {
   const currentFiles = useRecoilValue(currentFilesState);
   const image = useRecoilValue(userimageState);
   const [color, setColor] = useState("#ffffff");
-  const { toast } = useToast();
   const [currentCodeValue, setCurrentCodeValue] = useState("");
   const [files, setFiles] = React.useState(dummyFiles);
   const [selectedFile, setSelectedFile] = React.useState(null);
   const socket = useRef<WebSocket | null>(null);
   const count = useRecoilValue(charCountState);
   const router = useRouter();
+
   //initial render useffect
   useEffect(() => {
-    const websocket = new WebSocket(`wss://${params.id}.wsserver.aneesh.wiki`);
-    console.log(websocket);
+    const websocket = new WebSocket(`ws://${params.id}.wsserver.aneesh.wiki/`);
     websocket.onopen = () => {
       socket.current = websocket;
       setLoading(false);
@@ -53,35 +51,11 @@ export default function App({ params, searchParams }: any) {
         })
       );
     };
-    websocket.onerror = () => {
-      alert("currently trying to fix a server-side issue, should be up soon!");
+    websocket.onerror = (err) => {
       setTimeout(() => {
         setLoading(false);
         router.push("/");
       }, 3000);
-    };
-    websocket.onmessage = (event) => {
-      const parsed_message = JSON.parse(event.data);
-      if (parsed_message.type == "filesFetchedRoot") {
-        parsed_message.files.find((file: any) => file.name == "index.js");
-        setSelectedFile(
-          parsed_message.files.find((file: any) => file.name == "index.js")
-        );
-        socket.current?.send(
-          JSON.stringify({
-            type: "fetchFileContent",
-            fileName: `/${parsed_message.files.find((file: any) => file.name == "index.js").path}`,
-          })
-        );
-        socket.current!.onmessage = (event: any) => {
-          console.log(event.data);
-          setCurrentCodeValue(JSON.parse(event.data).content);
-        };
-        setFiles(parsed_message.files);
-      }
-      if (parsed_message.type == "fetchFileContent") {
-        console.log(parsed_message);
-      }
     };
   }, []);
   const programmingJokes = [
@@ -128,21 +102,7 @@ export default function App({ params, searchParams }: any) {
     if (socket.current) {
       socket.current.onmessage = (event) => {
         const parsed_message = JSON.parse(event.data);
-        console.log(event.data);
         if (parsed_message.type == "newFileAdded") {
-          setSelectedFile(
-            parsed_message.files.find((file: any) => file.name == "index.js")
-          );
-          socket.current?.send(
-            JSON.stringify({
-              type: "fetchFileContent",
-              fileName: `/${parsed_message.files.find((file: any) => file.name == "index.js").path}`,
-            })
-          );
-          socket.current!.onmessage = (event: any) => {
-            console.log(event.data);
-            setCurrentCodeValue(JSON.parse(event.data).content);
-          };
           setFileS(parsed_message.files);
           setFiles(parsed_message.files);
         }
@@ -169,7 +129,6 @@ export default function App({ params, searchParams }: any) {
   }
 
   const onSelect = (file: any) => {
-    console.log(`/${file.path}`);
     socket.current?.send(
       JSON.stringify({
         type: "fetchFileContent",
@@ -177,7 +136,6 @@ export default function App({ params, searchParams }: any) {
       })
     );
     socket.current!.onmessage = (event: any) => {
-      console.log(event.data);
       setCurrentCodeValue(JSON.parse(event.data).content);
     };
     setSelectedFile(file);
@@ -219,7 +177,6 @@ export default function App({ params, searchParams }: any) {
   }
 
   async function updateFileStucture() {
-    console.log("updating file");
     socket.current!.send(
       JSON.stringify({
         type: "fetchFilesRootNow",
@@ -233,17 +190,6 @@ export default function App({ params, searchParams }: any) {
   return (
     <>
       <div className="flex justify-between items-center gap-5 w-screen rounded-md m-2">
-        <div className="w-full absolute h-screen">
-          <SparklesCore
-            id="tsparticlesfullpage"
-            background="transparent"
-            minSize={0.6}
-            maxSize={1.4}
-            particleDensity={50}
-            className="w-full h-screen"
-            particleColor="#FFFFFF"
-          />
-        </div>
         <div style={{ zIndex: "20" }}>
           <Sheet>
             <SheetTrigger asChild>
@@ -266,11 +212,10 @@ export default function App({ params, searchParams }: any) {
           className="mr-10 bg-blue-900 hover:bg-blue-500"
           style={{ zIndex: "20" }}
           onClick={() => {
-            alert("make sure to start your server with: node index.js");
             window.open(`http://localhost:3000/output/${params.id}`, "_blank");
           }}
         >
-          Show Output
+          Output
         </Button>
       </div>
       <div className="w-screen flex">

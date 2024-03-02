@@ -42,7 +42,6 @@ export const SparklesCore = (props: ParticlesProps) => {
 
   const particlesLoaded = async (container?: Container) => {
     if (container) {
-      console.log(container);
       controls.start({
         opacity: 1,
         transition: {
@@ -57,7 +56,7 @@ export const SparklesCore = (props: ParticlesProps) => {
       {init && (
         <Particles
           id={id || "tsparticles"}
-          className={cn("h-full w-full")}
+          className={cn("h-screen w-screen")}
           particlesLoaded={particlesLoaded}
           options={{
             background: {
@@ -123,7 +122,7 @@ export const SparklesCore = (props: ParticlesProps) => {
                 },
               },
               color: {
-                value: particleColor || "#ffffff",
+                value: particleColor || "#dd1616",
                 animation: {
                   h: {
                     count: 0,
@@ -396,7 +395,7 @@ export const SparklesCore = (props: ParticlesProps) => {
               links: {
                 blink: false,
                 color: {
-                  value: "#fff",
+                  value: "#480c0c",
                 },
                 consent: false,
                 distance: 100,

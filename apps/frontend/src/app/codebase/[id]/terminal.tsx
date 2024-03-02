@@ -37,7 +37,6 @@ export function TerminalComponent(props: { current_socket: WebSocket | null }) {
       .map((command) => command.key)
       .join("");
     if (enteredCommand.includes("mkdir") || enteredCommand.includes("touch")) {
-      console.log(socket.current);
       window.location.reload();
     }
   }
@@ -98,11 +97,6 @@ export function TerminalComponent(props: { current_socket: WebSocket | null }) {
       className="rounded-md border-2 w-full"
     >
       <div ref={terminalRef} style={{ height: "100%" }} className="w-full" />
-      <button
-        onClick={() => {
-          console.log(socket.current);
-        }}
-      ></button>
     </div>
   );
 }

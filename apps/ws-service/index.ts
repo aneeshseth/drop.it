@@ -88,29 +88,20 @@ wss.on("connection", async (ws) => {
       await respondToCommmand(parsedData.command);
     }
     if (parsedData.type == "fetchFilesRoot") {
-      console.log('fetch files root.')
       const files = await fetchFiles(`${parsedData.dir}`);
-      console.log(files)
-      console.log(ws.emit(JSON.stringify({
-        type: "filesFetchedRoot",
-        files: files,
-      })))
-      console.log(ws)
-      console.log(ws.send(
+      ws.send(
         JSON.stringify({
           type: "filesFetchedRoot",
           files: files,
         })
-      ))
+      )
     }
     if (parsedData.type == "fetchFilesRootNow") {
-      console.log('fetch files root.')
       const files = await fetchFiles(`${parsedData.dir}`);
-      console.log(files)
-      console.log(ws.emit(JSON.stringify({
+      ws.emit(JSON.stringify({
         type: "filesFetchedRoot",
         files: files,
-      })))
+      }))
       ws.send("hello world")
     }
     if (parsedData.type == "fetchFilesSubRoot") {

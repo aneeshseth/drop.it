@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import fs from "fs";
+import path from "path";
 
 const client = new S3Client({
   region: "",
@@ -12,30 +13,18 @@ const client = new S3Client({
   },
 });
 
-export const main = async () => {
-  fs.readdir("./node", (err, files) => {
-    if (err) console.log(err);
-    console.log(files);
-  });
-};
-
-main();
-
 dotenv.config();
 const app = express();
 app.use(cors());
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("preinit server.");
-});
+
 
 async function getFiles(language: string) {
   return new Promise((resolve, reject) => {
-    fs.readdir(`./${language}`, (err, files) => {
+    fs.readdir(`../${language}`, (err, files) => {
       if (err) reject(err);
-      console.log(files);
       resolve(files);
     });
   });
@@ -43,32 +32,45 @@ async function getFiles(language: string) {
 
 async function uploadToS3(
   codebase_name: string,
-  file: string,
+  filePath: string,
   language: string
 ) {
   return new Promise<void>((resolve, reject) => {
-    console.log(language);
-    console.log(file);
-    fs.readFile(`./${language}/${file}`, async (err, data) => {
-      if (err) reject(err);
-      const command = new PutObjectCommand({
-        Bucket: "sandbox-b",
-        Key: `${codebase_name}/${file}`,
-        Body: data,
+    const stats = fs.statSync(filePath);
+    if (stats.isDirectory()) {
+      fs.readdir(filePath, async (err, files) => {
+        if (err) reject(err);
+        const uploadPromises = files.map(async (file) => {
+          const nestedFilePath = path.join(filePath, file);
+          await uploadToS3(codebase_name, nestedFilePath, language);
+        });
+        await Promise.all(uploadPromises);
+        resolve();
       });
-      await client.send(command);
-      resolve();
-    });
+    } else {
+      fs.readFile(filePath, async (err, data) => {
+        if (err) reject(err);
+        const relativePath = path.relative(`../${language}`, filePath);
+        const s3Key = `${codebase_name}/${relativePath}`;
+        const command = new PutObjectCommand({
+          Bucket: "sandbox-b",
+          Key: s3Key,
+          Body: data,
+        });
+        await client.send(command);
+        resolve();
+      });
+    }
   });
 }
 
 app.post("/pre_init", async (req: Request, res: Response) => {
   const { codebase_name, language } = req.body;
   const files: any = await getFiles(language);
-  const fileUploads = files.map(
-    async (file: string) => await uploadToS3(codebase_name, file, language)
+  const uploadPromises = files.map(async (file: string) =>
+    uploadToS3(codebase_name, `../${language}/${file}`, language)
   );
-  await Promise.all(fileUploads);
+  await Promise.all(uploadPromises);
   return res.sendStatus(200);
 });
 

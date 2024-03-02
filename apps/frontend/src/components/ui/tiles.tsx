@@ -73,6 +73,8 @@ function Tiles({ user_image, ...props }: any) {
       programmingJokes[Math.floor(Math.random() * programmingJokes.length)]
     );
   }, []);
+  const client = "https://lyvubwpypyofljfwjamu.supabase.co"
+  const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5dnVid3B5cHlvZmxqZndqYW11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkzNTAzNjEsImV4cCI6MjAyNDkyNjM2MX0.7f6N3BZflML4SzK61OoGoQicPQGqmMFnkxIBQONHHvg"
   function generateRandomString(length: number) {
     const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
     let randomString = "";
@@ -88,9 +90,10 @@ function Tiles({ user_image, ...props }: any) {
 
     return randomString;
   }
+
   const supabase = createClient(
-    process.env.SUPABASE_CLIENT!,
-    process.env.SUPABASE_KEY!
+    client,
+    key
   );
 
   const [thisJoke, setThisJoke] = useState("");

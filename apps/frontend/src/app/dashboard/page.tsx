@@ -3,6 +3,7 @@ import React from "react";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
 import Tiles from "@/components/ui/tiles";
+import { Button } from "@/components/ui/button";
 
 export default async function page() {
   const data = await getServerSession(options);
@@ -26,8 +27,9 @@ export default async function page() {
         <div>
           <img
             src={data.user?.image || ""}
-            className="rounded-full mr-5 w-16 h-16 sm:-mt-10 mt-5 absolute lg:top-20 right-10 top-28"
+            className="rounded-full mr-10 w-16 h-16 sm:-mt-10 mt-5 absolute lg:top-20 right-24 top-28"
           />
+          
         </div>
       </div>
       <div className="-mt-10">

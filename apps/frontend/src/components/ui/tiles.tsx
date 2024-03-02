@@ -146,7 +146,7 @@ function Tiles({ user_image, ...props }: any) {
   }
   return (
     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 px-4 md:px-6 md:py-8 mt-5">
-      <Button  className="mr-5 w-16 h-16 sm:-mt-10 mt-5 absolute lg:top-20 right-10 top-28 bg-black" onClick={() => {
+      <Button  className="mr-5 w-16 h-16 sm:-mt-10 mt-5 absolute lg:top-20 right-10 top-28 bg-blue-700 hover:bg-blue-500" onClick={() => {
         router.push("/docs")
       }}>docs.</Button>
       <Dialog>

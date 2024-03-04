@@ -17,7 +17,6 @@ export default function SettingsProfilePage() {
     <>
       <div className="w-screen h-screen border-2 border-neutral-800 flex rounded-xl p-3">
         <div className="w-12/12 border-neutral-800 rounded-xl border-2 r-div p-2">
-          
           {isCreate && <Component />}
         </div>
       </div>

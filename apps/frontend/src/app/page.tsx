@@ -41,7 +41,6 @@ export default function Home() {
           <span className="text-blue-500">open source</span> sandbox for writing
           codebases in the browser.
         </h1>
-
         <div className="w-screen absolute inset-0 h-screen">
           <SparklesCore
             id="tsparticlesfullpage"

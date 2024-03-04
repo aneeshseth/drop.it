@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 export default function Component() {
   return (
     <div className="bg-[#121212] text-white p-8 h-full overflow-auto">
-      <h1 className="text-5xl font-bold mb-4">
+      <h1 className="text-4xl font-bold mb-4">
         The <span className="text-blue-500">drop.it</span> design
         implementation.
       </h1>
@@ -16,8 +16,8 @@ export default function Component() {
       </div>
       <hr className="border-gray-700 mb-6" />
 
-      <h1 className="text-3xl font-bold mb-4">Problem Statement:</h1>
-      <p className="mb-3 text-lg">
+      <h1 className="text-2xl font-bold mb-4">Problem Statement:</h1>
+      <p className="mb-3 text-md">
         The problem statement is simple. I want to be able to write codebases in
         my browser, in multiple stacks: Typescript for React.js, C++, Python for
         Flask, Node.js + Typescript, etc. I need an integrated terminal to run
@@ -35,18 +35,18 @@ export default function Component() {
           className="rounded-md h-[200px] lg:h-[150px]"
         />
       </div>
-      <p className="mb-6 text-lg">
+      <p className="mb-6 text-md">
         Okay that was for all the fluff, now straight to the cooler stuff.
       </p>
-      <p className="mb-6 text-xl">
+      <p className="mb-6 text-lg">
         The application is built with 3 primary services: An aws-storage
         microservice, A Kubernetes orchestrator microservice, and A WebSocket
         service.
       </p>
-      <p className="mb-6 text-xl">
+      <p className="mb-6 text-lg">
         <b>The AWS Storage microservice</b>:
       </p>
-      <p className="mb-6 text-xl">
+      <p className="mb-6 text-md">
         Let’s say I am a client-side user, and I log onto the application, and
         choose my tech stack for the codebase I want to create. Each of those
         codebases will have a set of boilerplate files. For example: a codebase
@@ -69,17 +69,17 @@ export default function Component() {
           className="rounded-md h-[200px] lg:h-[500px]"
         />
       </div>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         Okay hold on, before we move onto the next service (the K8s
         orchestration service), it’s important to understand how the
         architecture with K8s is actually built.
       </p>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         There’s 3 main components what we’re using in K8s: A service, A pod, An
         Ingress, which has an ingress controller with an External IP listening
         for any updates to this architecture, and the IP we hit from the client.
       </p>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         The pods are containers responsible for running a WebSocket server, the
         server which in real-time would listen to updates from the client who is
         editing the codebase files (which are also bought onto the container
@@ -89,7 +89,7 @@ export default function Component() {
         show you the installation progress, or htop which shows you your CPU
         usage on the device.
       </p>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         But, Why not a simple K8s Architecture without an Ingress? Why don’t we
         just get x number of nodes, and have a K8s service that has an external
         IP that would give us access to Pods, and maybe a Horizontal Autoscaler
@@ -101,10 +101,10 @@ export default function Component() {
           className="rounded-md h-[200px] lg:h-[500px]"
         />
       </div>
-      <p className="mb-3 text-2xl">
+      <p className="mb-3 text-xl">
         <b>Path Based Routing.</b>
       </p>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         We know that there’s a WebSocket server running. The WebSocket server
         will be exposed from the K8s Service in front of it that needs to be
         hit. So let’s say the ip address was x.y.y.z, and it was pointing to
@@ -116,7 +116,7 @@ export default function Component() {
         codebase, how will I locate the right codebase/pod for further requests?
         There’s an issue he
       </p>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         Logically, this leads to one thing. I need a new IP address for every
         new codebase i create, the IP address being of a service which means
         that a new service and a pod which stores my filesystem and runs the
@@ -129,17 +129,17 @@ export default function Component() {
           className="rounded-md h-[200px] lg:h-[500px]"
         />
       </div>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         Logically, this leads to one thing. I need a new IP address for every
         new codebase i create, the IP address being of a service which means
         that a new service and a pod which stores my filesystem and runs the
         websocket server is needed everytime a codebase is created. And this is
         where the Ingress comes in.
       </p>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         The Ingress’s job is to simply do the following task:
       </p>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         Whenever a request comes to the Ingress Controller (the component that
         has the external IP to hit, which orchestrates, and routes incoming
         traffic), checks the codebase id within the wildcard domain so
@@ -153,37 +153,37 @@ export default function Component() {
           className="rounded-md h-[200px] lg:h-[500px]"
         />
       </div>
-      <p className="mb-3 text-2xl">
+      <p className="mb-3 text-md">
         Now FINALLY, we come back to our initial 2nd bullet point: The
         Kubernetes orchestrator microservice.
       </p>
 
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         This microservice is responsible for exactly the above, to create a Pod
         which would run my WebSocket server, a Service that would expose my pod,
         and an Ingress, which would tell the ingress controller to route all
         requests from *codebase_name*.k8sserver.com to this service I just
         created.
       </p>
-      <p className="mb-3 text-3xl">And lastly, the WebSocket service.</p>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-2xl">And lastly, the WebSocket service.</p>
+      <p className="mb-3 text-md">
         The WebSocket service is exactly the one above, the service running
         within the Pod. It is responsible to listen to any Client-Side events
         for the terminal that is running on the server, codebase file changes,
         dependency management, etc.
       </p>
-      <p className="mb-3 text-3xl mt-5">Further Optimizations:</p>
-      <p className="mb-3 text-2xl mt-5">1) Optimizing WebSocket events.</p>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-2xl mt-5">Further Optimizations:</p>
+      <p className="mb-3 text-xl mt-5">1) Optimizing WebSocket events.</p>
+      <p className="mb-3 text-md">
         Because we are constantly updating the server through WebSocket events
         for changes in the file system, the current system would change to
         updating only diffs within the file instead of writing to the whole file
         each time.
       </p>
-      <p className="mb-3 text-2xl mt-5">
+      <p className="mb-3 text-xl mt-5">
         2) Optimizing for resources used in K8s.
       </p>
-      <p className="mb-3 text-xl">
+      <p className="mb-3 text-md">
         These pods created for the codebase should go down every time a user
         logs off the application, and all changes should be asynchronously
         handled by another service which is listening to a central distributed

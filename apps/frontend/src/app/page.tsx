@@ -41,17 +41,6 @@ export default function Home() {
           <span className="text-blue-500">open source</span> sandbox for writing
           codebases in the browser.
         </h1>
-        <div className="w-screen absolute inset-0 h-screen">
-          <SparklesCore
-            id="tsparticlesfullpage"
-            background="transparent"
-            minSize={0.6}
-            maxSize={1.4}
-            particleDensity={70}
-            className="w-screen h-screen"
-            particleColor="#FFFFFF"
-          />
-        </div>
         <div style={{ zIndex: 20, position: "relative" }}>
           <Button
             variant={"link"}

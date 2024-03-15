@@ -25,8 +25,7 @@ Let’s say I am a client-side user, and I log onto the application, and choose 
 
 The AWS Storage Microservice is responsible for taking those boilerplate files that are stored on the server in a folder, and putting them with a random unique generated slug into S3.
 
-<img width="1355" alt="image" src="
-https://file.notion.so/f/f/73df6171-5be1-4495-935b-811d355107f2/e239360f-cfdd-4245-885a-a8a51f16c9d5/Untitled.png?id=13ca1076-9fb7-4f51-8ed3-573ee598eb5b&table=block&spaceId=73df6171-5be1-4495-935b-811d355107f2&expirationTimestamp=1710554400000&signature=FiaXFYe3CYvp5u5-bk7hgGA6KhPMtnpSj1fMKxLKbxM&downloadName=Untitled.png">
+<img width="1355" alt="image" src="https://file.notion.so/f/f/73df6171-5be1-4495-935b-811d355107f2/e239360f-cfdd-4245-885a-a8a51f16c9d5/Untitled.png?id=13ca1076-9fb7-4f51-8ed3-573ee598eb5b&table=block&spaceId=73df6171-5be1-4495-935b-811d355107f2&expirationTimestamp=1710554400000&signature=FiaXFYe3CYvp5u5-bk7hgGA6KhPMtnpSj1fMKxLKbxM&downloadName=Untitled.png">
 <img width="1355" alt="image" src="https://file.notion.so/f/f/73df6171-5be1-4495-935b-811d355107f2/384ab256-ad5a-4486-9906-9d0378921130/Untitled.png?id=1a0f14de-d6f1-4d3e-8f87-bfb5319c9c8b&table=block&spaceId=73df6171-5be1-4495-935b-811d355107f2&expirationTimestamp=1710554400000&signature=7nBkem2KIaihsHwo4hkBmA6LTbbpTbJi8pA5-AfzuxI&downloadName=Untitled.png">
 
 Okay hold on, before we move onto the next service (the K8s orchestration service), it’s important to understand how the architecture with K8s is actually built.

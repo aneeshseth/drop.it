@@ -9,8 +9,6 @@ The final codebase UI looks something like this:
 <img width="1355" alt="image" src="https://file.notion.so/f/f/73df6171-5be1-4495-935b-811d355107f2/135a80f8-c160-4043-9589-93315629a4b5/Untitled.png?id=3185a2cc-9b8f-4a37-aa16-02227feba303&table=block&spaceId=73df6171-5be1-4495-935b-811d355107f2&expirationTimestamp=1710554400000&signature=nbsPVJgWBZNKsXbq1C2-H3CMVde0mRrQLRv_qXz3D00&downloadName=Untitled.png">
 <img width="1355" alt="image" src="https://file.notion.so/f/f/73df6171-5be1-4495-935b-811d355107f2/1f143f57-8d90-47de-bbbd-facdc869652b/Untitled.png?id=d1a6fee2-8321-4039-b66b-b2d8d82c0a3f&table=block&spaceId=73df6171-5be1-4495-935b-811d355107f2&expirationTimestamp=1710554400000&signature=8q8MJA3hHiom9cbOFLH8dWzgaEdOtjy9pRt1QzX3XIw&downloadName=Untitled.png">
 
-Okay that was for all the fluff, now straight to the cooler stuff.
-
 The application is built with 3 primary services:
 
 - An aws-storage microservice

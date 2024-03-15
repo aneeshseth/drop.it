@@ -1,6 +1,6 @@
 # drop.it
 
-**write codebases in your browser.**
+**writing codebases in your browser.**
 
 <img width="1355" alt="image" src="https://file.notion.so/f/f/73df6171-5be1-4495-935b-811d355107f2/2bca3a7a-372b-4830-a8ca-7152c5271026/Untitled.png?id=8467c545-962b-4e28-b539-d4eb4c79328b&table=block&spaceId=73df6171-5be1-4495-935b-811d355107f2&expirationTimestamp=1710554400000&signature=oyHA_50zAtFoPRUROEIPi0jWAp1ZV94OHaf1vI-B5q8&downloadName=Untitled.png">
 

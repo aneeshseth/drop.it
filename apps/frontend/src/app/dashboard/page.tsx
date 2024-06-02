@@ -24,7 +24,6 @@ export default async function page() {
           className="w-4/6 rounded-xl"
         />
       </div>
-    </div>
   </div>
 );
 

@@ -49,7 +49,7 @@ export default function Home() {
               signIn("github", { callbackUrl: "/dashboard" });
             }}
           >
-            start writing code.
+            demo.
           </Button>
           <Button
             variant={"link"}

@@ -10,31 +10,39 @@ export default async function page() {
 
   if (!data) redirect("/");
 
-  return (
-    <div>
-      <div className="w-screen justify-center flex flex-col">
-        <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-5xl mt-10 mr-5 ml-5">
-          choose a starter codebase.
-        </h1>
-        <h1 className="text-md tracking-tight lg:text-md mr-5 ml-5 mt-2 mb-5">
-          currently available the below stacks, soon in 10+ stacks.
-        </h1>
+ return (
+  <div>
+    <div className="w-screen justify-center flex flex-col">
+      <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-5xl mt-10 mr-5 ml-5">
+        choose a starter codebase.
+      </h1>
+      <h1 className="text-md tracking-tight lg:text-md mr-5 ml-5 mt-2 mb-5">
+        currently available the below stacks, soon in 10+ stacks.
+      </h1>
+    </div>
+
+    <div className="mt-20 ml-5 hidden md:block">
+      Welcome <div className="inline text-lime-600">{data.user?.name}.</div>
+    </div>
+
+    <div className="flex justify-end w-screen">
+      <div>
+        <img
+          src={data.user?.image || ""}
+          className="rounded-full mr-10 w-16 h-16 sm:-mt-10 mt-5 absolute lg:top-20 right-24 top-28"
+        />
       </div>
-      <div className="mt-20 ml-5 hidden md:block">
-        Welcome <div className="inline text-lime-600">{data.user?.name}.</div>
-      </div>
-      <div className="flex justify-end w-screen">
-        <div>
-          <img
-            src={data.user?.image || ""}
-            className="rounded-full mr-10 w-16 h-16 sm:-mt-10 mt-5 absolute lg:top-20 right-24 top-28"
-          />
-          
-        </div>
-      </div>
-      <div className="-mt-10">
-        <Tiles user_image={data.user?.image} />
+
+      <div className="flex justify-center h-screen items-center">
+        <video
+          src="https://res.cloudinary.com/dysiv1c2j/video/upload/v1709384508/0302_aepd6i.mov"
+          autoPlay
+          controls
+          className="w-4/6 rounded-xl"
+        />
       </div>
     </div>
-  );
+  </div>
+);
+
 }

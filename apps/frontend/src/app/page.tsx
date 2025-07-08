@@ -24,17 +24,6 @@ export default function Home() {
           drop.it
         </h1>
       </div>
-      <div className="absolute top-10 right-2 mt-1" style={{ zIndex: "20" }}>
-        <Button
-          variant={"link"}
-          className="text-white mt-5 text-xl underline"
-          onClick={() => {
-            window.open("https://github.com/aneeshseth/drop.it", "_blank");
-          }}
-        >
-          code.
-        </Button>
-      </div>
       <Spotlight className="-top-40 left-0 md:left-60 absolute" fill="blue" />
       <div className="p-4 max-w-7xl z-10 w-full pt-20 text-center text-white -mt-7 ">
         <h1 className="scroll-m-20 text-2xl tracking-tight lg:text-5xl md:mt-44 lg:mt-44 mt-32 font-serif sm:mt-36">
